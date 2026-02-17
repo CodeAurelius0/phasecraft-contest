@@ -150,11 +150,8 @@ Do NOT add README there (you already have one).
 Wait 30–60 seconds.
 
 Your site will appear here:
+https://github.com/CodeAurelius0/phasecraft-contest
 
-[https://USERNAME.github.io/REPOSITORY-NAME/](https://USERNAME.github.io/REPOSITORY-NAME/)
-
-Example:
-[https://john123.github.io/asknestle-ui/](https://john123.github.io/asknestle-ui/)
 
 ---
 
