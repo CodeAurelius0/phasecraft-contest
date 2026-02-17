@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nestlé — Good Food, Good Life</title>
+<meta name="description" content="AskNestlé - Nutrition Information Simplified for Indian families" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: hsl(220 20% 10%);
+  --fg: hsl(40 20% 90%);
+  --card: hsl(220 15% 14%);
+  --card-60: hsla(220,15%,14%,0.6);
+  --primary: hsl(180 40% 45%);
+  --primary-fg: hsl(220 20% 10%);
+  --secondary: hsl(220 15% 18%);
+  --muted: hsl(220 12% 20%);
+  --muted-fg: hsl(220 10% 55%);
+  --accent: hsl(38 60% 55%);
+  --border: hsl(220 12% 22%);
+  --border-40: hsla(220,12%,22%,0.4);
+  --radius: 0.75rem;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+.font-display { font-family: 'Playfair Display', serif; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+/* ─── CONTAINER ─── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+/* ─── PRELOADER ─── */
+.preloader { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); transition: opacity 0.8s ease, backdrop-filter 0.8s ease; }
+.preloader.loaded { opacity: 0; pointer-events: none; }
+.preloader-logo { font-family: 'Playfair Display', serif; font-size: clamp(3rem,8vw,6rem); font-weight: 700; color: var(--fg); animation: ppulse 1.8s ease-in-out infinite; }
+.preloader-tagline { color: var(--muted-fg); font-size: 1.1rem; margin-top: 1rem; letter-spacing: 0.2em; text-transform: uppercase; animation: pfade 1.8s ease-in-out infinite; }
+.preloader-bar { margin-top: 2rem; height: 2px; background: hsla(180,40%,45%,0.3); border-radius: 9999px; overflow: hidden; width: 12rem; }
+.preloader-bar-inner { height: 100%; background: var(--primary); border-radius: 9999px; animation: pprogress 1.6s ease-in-out forwards; }
+@keyframes ppulse { 0%,100%{opacity:.6;transform:scale(.98)} 50%{opacity:1;transform:scale(1)} }
+@keyframes pfade { 0%,100%{opacity:.3} 50%{opacity:.8} }
+@keyframes pprogress { 0%{width:0} 100%{width:100%} }
+/* ─── GLASS ─── */
+.glass-card { background: var(--card-60); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--border-40); border-radius: var(--radius); box-shadow: 0 8px 32px hsla(0,0%,0%,0.3), inset 0 1px 0 hsla(0,0%,100%,0.05); }
+.glass-nav { background: hsla(220,20%,10%,0.7); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border-bottom: 1px solid hsla(220,12%,22%,0.3); }
+.glass-stat { background: hsla(180,40%,45%,0.15); backdrop-filter: blur(16px); border: 1px solid hsla(180,40%,45%,0.2); border-radius: var(--radius); }
+/* ─── REVEAL ─── */
+.section-reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.section-reveal.visible { opacity: 1; transform: translateY(0); }
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+/* ─── HOVER ─── */
+.hover-lift { transition: all 0.3s ease; cursor: pointer; }
+.hover-lift:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 16px 48px hsla(0,0%,0%,0.5), 0 0 0 1px hsla(180,40%,45%,0.15); }
+.block-hover { position: relative; transition: all 0.3s ease; cursor: pointer; border: 1px solid transparent; }
+.block-hover:hover { border-color: hsla(180,40%,45%,0.3); box-shadow: 0 0 30px hsla(180,40%,45%,0.08), inset 0 1px 0 hsla(0,0%,100%,0.06); background: hsla(220,15%,14%,0.8); }
+/* ─── TEXT GRADIENT ─── */
+.text-gradient { background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+/* ─── LINKS WITH UNDERLINE ─── */
+.nav-link { position: relative; font-size: 0.875rem; color: var(--muted-fg); transition: color 0.3s; }
+.nav-link::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 2px; bottom: -4px; left: 0; background: var(--primary); transform-origin: bottom right; transition: transform 0.3s ease; }
+.nav-link:hover { color: var(--fg); }
+.nav-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+.nav-link-bold { font-weight: 600; color: var(--fg); }
+.nav-link-bold:hover { color: var(--primary); }
+/* ─── CTA BANNER ─── */
+.cta-banner { background: linear-gradient(to right, hsla(180,40%,45%,0.9), hsla(180,40%,45%,0.7)); backdrop-filter: blur(16px); border-radius: 1rem; }
+/* ─── TIMELINE ─── */
+.timeline-line { position: absolute; left: 1.5rem; top: 0; bottom: 0; width: 1px; background: var(--border-40); }
+.timeline-dot { position: absolute; left: 1rem; width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--primary); border: 4px solid var(--bg); z-index: 10; }
+/* ─── ACCORDION ─── */
+.accordion-item { border-bottom: 1px solid var(--border-40); border-radius: var(--radius); padding: 0 1rem; }
+.accordion-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 1.5rem 0; text-align: left; }
+.accordion-btn span { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; color: var(--fg); transition: color 0.3s; }
+.accordion-btn:hover span { color: var(--primary); }
+.accordion-icon { width: 20px; height: 20px; color: var(--primary); transition: transform 0.3s; }
+.accordion-body { overflow: hidden; transition: max-height 0.5s ease, opacity 0.5s ease; max-height: 0; opacity: 0; }
+.accordion-body.open { opacity: 1; }
+.accordion-body-inner { padding-bottom: 1.5rem; color: var(--muted-fg); line-height: 1.7; }
+/* ─── FADE-UP ANIMATION ─── */
+@keyframes fadeUp { 0%{opacity:0;transform:translateY(30px)} 100%{opacity:1;transform:translateY(0)} }
+.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+/* ─── SCROLL-TO-TOP ─── */
+.scroll-top { position: fixed; bottom: 2rem; right: 2rem; z-index: 50; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 0; transform: translateY(1rem); pointer-events: none; }
+.scroll-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.scroll-top:hover { transform: scale(1.1); }
+/* ─── GRIDS ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.grid-4 { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+@media (min-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr 1fr; gap: 4rem; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .hide-mobile { display: block !important; }
+}
+.hide-mobile { display: none; }
+.items-center { align-items: center; }
+.text-center { text-align: center; }
+/* ─── BUTTONS ─── */
+.btn-primary { background: var(--primary); color: var(--primary-fg); padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; transition: all 0.3s; }
+.btn-primary:hover { background: hsla(180,40%,45%,0.8); transform: scale(1.05); }
+.btn-outline { border: 1px solid hsla(220,20%,10%,0.4); color: var(--primary-fg); padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; transition: all 0.3s; }
+.btn-outline:hover { background: hsla(220,20%,10%,0.1); transform: scale(1.05); }
+/* ─── SEARCH BAR ─── */
+.search-bar { display: flex; align-items: center; gap: 0.5rem; background: hsla(220,15%,18%,0.5); backdrop-filter: blur(8px); border-radius: 9999px; padding: 0.5rem 1rem; }
+.search-bar input { background: transparent; border: none; outline: none; color: var(--fg); font-size: 0.875rem; width: 8rem; }
+.search-bar input::placeholder { color: var(--muted-fg); }
+/* ─── SVG ICONS ─── */
+.icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-lg { width: 40px; height: 40px; }
+.icon-sm { width: 16px; height: 16px; }
+/* ─── MISC ─── */
+.relative { position: relative; }
+.aspect-43 { aspect-ratio: 4/3; object-fit: cover; width: 100%; border-radius: var(--radius); }
+.aspect-sq { aspect-ratio: 1; object-fit: cover; width: 100%; border-radius: var(--radius); }
+.rounded-xl { border-radius: var(--radius); }
+.rounded-lg { border-radius: calc(var(--radius) - 2px); }
+section { padding: 6rem 0; }
+.bg-sec20 { background: hsla(220,15%,18%,0.2); }
+.bg-sec30 { background: hsla(220,15%,18%,0.3); }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-12 { margin-bottom: 3rem; }
+.mb-16 { margin-bottom: 4rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-8 { margin-top: 2rem; }
+.mt-16 { margin-top: 4rem; }
+.pt-6 { padding-top: 1.5rem; }
+.pt-8 { padding-top: 2rem; }
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.p-12 { padding: 3rem; }
+.pb-12 { padding-bottom: 3rem; }
+.pb-20 { padding-bottom: 5rem; }
+.pl-16 { padding-left: 4rem; }
+.px-5 { padding: 0 1.25rem; }
+.py-3 { padding: 0.75rem 0; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+.gap-12 { gap: 3rem; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.justify-between { justify-content: space-between; }
+.w-48 { width: 12rem; }
+.max-w-3xl { max-width: 48rem; }
+.max-w-2xl { max-width: 42rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.border-t { border-top: 1px solid var(--border-40); }
+.border-b { border-bottom: 1px solid hsla(220,12%,22%,0.2); }
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-5xl { font-size: 3rem; }
+.text-primary { color: var(--primary); }
+.text-muted { color: var(--muted-fg); }
+.text-accent { color: var(--accent); }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-light { font-weight: 300; }
+.tracking-widest { letter-spacing: 0.1em; }
+.uppercase { text-transform: uppercase; }
+.italic { font-style: italic; }
+.leading-relaxed { line-height: 1.7; }
+.leading-tight { line-height: 1.2; }
+.inline-block { display: inline-block; }
+.space-y-3 > * + * { margin-top: 0.75rem; }
+/* ─── HERO ─── */
+.hero { position: relative; height: 100vh; display: flex; align-items: flex-end; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg), hsla(220,20%,10%,0.4), transparent); }
+.hero-content { position: relative; width: 100%; }
+/* ─── NAV ─── */
+.main-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: all 0.5s ease; }
+.nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid hsla(220,12%,22%,0.2); }
+.nav-bottom { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; }
+.nav-links { display: flex; align-items: center; gap: 1.5rem; }
+/* ─── FLOATING IMG ─── */
+.floating-img { position: absolute; bottom: -2rem; right: -1rem; }
+@media(min-width:768px) { .floating-img { right: 2rem; } }
+/* ─── QUOTE ICON ─── */
+.quote-icon { width: 40px; height: 40px; color: hsla(38,60%,55%,0.6); margin-bottom: 1rem; transition: color 0.3s; }
+.group:hover .quote-icon { color: var(--accent); }
+.group:hover .group-hover-primary { color: var(--primary); }
+/* ─── READ MORE LINK ─── */
+.read-more { color: var(--primary); font-size: 0.875rem; font-weight: 600; position: relative; display: inline-block; }
+.read-more::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 2px; bottom: -2px; left: 0; background: var(--primary); transform-origin: bottom right; transition: transform 0.3s; }
+.read-more:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+/* ─── FOOTER LINK ─── */
+.footer-link { font-size: 0.875rem; color: hsla(40,20%,90%,0.7); transition: all 0.3s; display: inline-block; }
+.footer-link:hover { color: var(--primary); transform: translateX(4px); }
+/* ─── WHY ICON BOX ─── */
+.icon-box { width: 6rem; height: 6rem; display: flex; align-items: center; justify-content: center; }
+.icon-box:hover .icon-inner { transform: scale(1.1); }
+.icon-inner { transition: transform 0.3s; color: var(--primary); }
+/* ─── RESPONSIVE HERO TEXT ─── */
+@media (min-width: 768px) {
+  .hero-title { font-size: 6rem; }
+  .hero-sub { font-size: 1.5rem; }
+  .p-12-md { padding: 4rem; }
+}
+</style>
+</head>
+<body>
+<!-- ═══ PRELOADER ═══ -->
+<div id="preloader" class="preloader">
+  <div class="preloader-logo">Nestlé</div>
+  <p class="preloader-tagline">Good food, Good life</p>
+  <div class="preloader-bar"><div class="preloader-bar-inner"></div></div>
+</div>
+<!-- ═══ NAV ═══ -->
+<nav id="mainNav" class="main-nav">
+  <div class="container">
+    <div class="nav-top">
+      <div class="flex items-center gap-4">
+        <span class="font-display text-2xl font-bold">Nestlé</span>
+        <span class="text-muted text-sm hide-mobile">Good food, Good life</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="search-bar hide-mobile">
+          <input type="text" placeholder="Search" />
+          <svg class="icon-sm" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <button class="btn-primary">Contact us</button>
+      </div>
+    </div>
+    <div class="nav-bottom">
+      <div class="nav-links">
+        <svg class="icon text-muted" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <a href="#about" class="nav-link hide-mobile">About us</a>
+        <a href="#stories" class="nav-link hide-mobile">Our Stories</a>
+        <a href="#features" class="nav-link hide-mobile">Our Brands</a>
+        <a href="#stats" class="nav-link hide-mobile">Nutrition Health and Wellness</a>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link nav-link-bold hide-mobile">Careers</a>
+        <a href="#" class="nav-link nav-link-bold hide-mobile">Investors</a>
+        <a href="#" class="nav-link nav-link-bold hide-mobile">Media</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1920&q=80" alt="Happy family together" class="hero-img" />
+  <div class="hero-overlay"></div>
+  <div class="hero-content container text-center pb-20">
+    <h1 class="font-display font-bold animate-fade-up" style="font-size:clamp(3rem,8vw,6rem)">AskNestlé</h1>
+    <p class="text-xl text-muted font-light animate-fade-up" style="animation-delay:0.2s">Nutrition Information Simplified</p>
+  </div>
+</section>
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="section-reveal container">
+    <div class="grid-2 items-center">
+      <div class="block-hover rounded-xl p-6">
+        <h2 class="font-display text-3xl font-bold leading-tight mb-6">Nestlé India's corporate service pillar website that aims to deliver authentic nutrition information to families.</h2>
+        <p class="text-muted leading-relaxed mb-4">AskNestlé is a platform that offers simplified nutrition information for varied needs with the help of Nestlé experts.</p>
+        <p class="text-muted leading-relaxed">Available in English, Hindi, Gujarati, Tamil, Telugu and Bengali, it provides access to healthy recipes, detailed nutrition information, and tools like a customized meal planner, growth tracker, and Immuno Scale.</p>
+      </div>
+      <div class="relative">
+        <div class="glass-card p-2 hover-lift">
+          <img src="https://images.unsplash.com/photo-1543342384-1f1350e27861?w=800&q=80" alt="Mother and daughter" class="aspect-43" />
+        </div>
+        <div class="floating-img glass-card p-2 w-48 hover-lift stagger-2">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" alt="Cooking together" class="aspect-sq" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ JOURNEY TIMELINE ═══ -->
+<section class="bg-sec20" id="journey">
+  <div class="section-reveal container">
+    <h2 class="font-display text-3xl font-bold text-center mb-4">The Nestlé <span class="text-gradient">Journey</span></h2>
+    <p class="text-muted text-center max-w-2xl mx-auto mb-16">From a humble beginning in Switzerland to nourishing millions of Indian families — our story spans over 150 years.</p>
+    <div class="relative max-w-3xl mx-auto">
+      <div class="timeline-line"></div>
+      <div class="relative pl-16 pb-12 stagger-1">
+        <div class="timeline-dot"></div>
+        <div class="glass-card p-6 block-hover rounded-xl">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="icon text-primary" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="text-primary font-display text-lg font-bold">1866</span>
+          </div>
+          <h3 class="font-display text-xl font-semibold mb-2">The Beginning</h3>
+          <p class="text-muted text-sm leading-relaxed">Henri Nestlé creates a breakthrough infant food, saving the life of a neighbor's child. The Nestlé company is founded in Vevey, Switzerland.</p>
+        </div>
+      </div>
+      <div class="relative pl-16 pb-12 stagger-2">
+        <div class="timeline-dot"></div>
+        <div class="glass-card p-6 block-hover rounded-xl">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="icon text-primary" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <span class="text-primary font-display text-lg font-bold">1905</span>
+          </div>
+          <h3 class="font-display text-xl font-semibold mb-2">Global Expansion</h3>
+          <p class="text-muted text-sm leading-relaxed">Nestlé merges with the Anglo-Swiss Condensed Milk Company, expanding its product portfolio and geographical reach across continents.</p>
+        </div>
+      </div>
+      <div class="relative pl-16 pb-12 stagger-3">
+        <div class="timeline-dot"></div>
+        <div class="glass-card p-6 block-hover rounded-xl">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="icon text-primary" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            <span class="text-primary font-display text-lg font-bold">1961</span>
+          </div>
+          <h3 class="font-display text-xl font-semibold mb-2">Nestlé India</h3>
+          <p class="text-muted text-sm leading-relaxed">Nestlé establishes its first factory in India at Moga, Punjab, transforming the Indian food industry and empowering local dairy farmers.</p>
+        </div>
+      </div>
+      <div class="relative pl-16 pb-12">
+        <div class="timeline-dot"></div>
+        <div class="glass-card p-6 block-hover rounded-xl">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="icon text-primary" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 3.5 1.5 6.5a7.5 7.5 0 0 1-.8 3.4"/><path d="M6.6 18.4a4.7 4.7 0 0 1 6.8-6.3"/></svg>
+            <span class="text-primary font-display text-lg font-bold">2018</span>
+          </div>
+          <h3 class="font-display text-xl font-semibold mb-2">AskNestlé Launches</h3>
+          <p class="text-muted text-sm leading-relaxed">AskNestlé is born as a digital platform to provide expert-backed nutrition guidance, healthy recipes, and personalized tools for Indian families.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ STATS ═══ -->
+<section id="stats">
+  <div class="section-reveal container">
+    <h2 class="font-display text-3xl font-bold mb-6">Our Journey So Far...</h2>
+    <p class="text-muted leading-relaxed max-w-3xl mb-12">AskNestlé was developed to provide validated information to mothers in a world of abundant yet mostly misleading information.</p>
+    <div class="grid-3">
+      <div class="glass-stat p-8 hover-lift block-hover rounded-xl stagger-1">
+        <div class="font-display text-5xl font-bold counter" data-target="41.2">0</div><span class="text-primary text-5xl font-display font-bold">M</span>
+        <p class="text-muted mt-2">Parents visited</p>
+      </div>
+      <div class="glass-stat p-8 hover-lift block-hover rounded-xl stagger-2">
+        <div class="font-display text-5xl font-bold counter" data-target="1.2">0</div><span class="text-primary text-5xl font-display font-bold">M</span>
+        <p class="text-muted mt-2">Meal plans generated</p>
+      </div>
+      <div class="glass-stat p-8 hover-lift block-hover rounded-xl stagger-3">
+        <div class="font-display text-5xl font-bold counter" data-target="3.7">0</div><span class="text-primary text-5xl font-display font-bold">M</span>
+        <p class="text-muted mt-2">Expert articles read</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ OUR STORIES ═══ -->
+<section class="bg-sec30" id="stories">
+  <div class="section-reveal container">
+    <h2 class="font-display text-3xl font-bold text-center mb-16">Our <span class="text-gradient">Stories</span></h2>
+    <div class="grid-2" style="gap:2rem">
+      <div class="glass-card p-8 block-hover rounded-xl group stagger-1">
+        <span class="text-xs font-semibold tracking-widest uppercase text-primary mb-3 inline-block">Heritage</span>
+        <h3 class="font-display text-2xl font-bold mb-3 group-hover-primary">The Moga Story</h3>
+        <p class="text-muted leading-relaxed mb-4">How a small factory in Punjab transformed thousands of lives by empowering local dairy farmers and building one of India's most trusted food brands.</p>
+        <a href="#" class="read-more">READ MORE →</a>
+      </div>
+      <div class="glass-card p-8 block-hover rounded-xl group stagger-2">
+        <span class="text-xs font-semibold tracking-widest uppercase text-primary mb-3 inline-block">Impact</span>
+        <h3 class="font-display text-2xl font-bold mb-3 group-hover-primary">Nourishing 1 Billion</h3>
+        <p class="text-muted leading-relaxed mb-4">Nestlé India's mission to improve nutrition across the country, making wholesome food accessible to every family, one meal at a time.</p>
+        <a href="#" class="read-more">READ MORE →</a>
+      </div>
+      <div class="glass-card p-8 block-hover rounded-xl group stagger-3">
+        <span class="text-xs font-semibold tracking-widest uppercase text-primary mb-3 inline-block">Sustainability</span>
+        <h3 class="font-display text-2xl font-bold mb-3 group-hover-primary">From Farm to Table</h3>
+        <p class="text-muted leading-relaxed mb-4">Our commitment to responsible sourcing means that every ingredient tells a story of sustainability, fair trade, and respect for the land.</p>
+        <a href="#" class="read-more">READ MORE →</a>
+      </div>
+      <div class="glass-card p-8 block-hover rounded-xl group">
+        <span class="text-xs font-semibold tracking-widest uppercase text-primary mb-3 inline-block">Community</span>
+        <h3 class="font-display text-2xl font-bold mb-3 group-hover-primary">Empowering Mothers</h3>
+        <p class="text-muted leading-relaxed mb-4">AskNestlé's community of 40M+ parents sharing experiences, seeking expert advice, and raising healthier children together.</p>
+        <a href="#" class="read-more">READ MORE →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ WHY ASKNESTLE ═══ -->
+<section>
+  <div class="section-reveal container text-center">
+    <h2 class="font-display text-3xl font-bold mb-16">Why <span class="text-gradient">AskNestlé</span>?</h2>
+    <div class="grid-3">
+      <div class="flex flex-col items-center gap-4 stagger-1" style="align-items:center">
+        <div class="glass-card icon-box hover-lift">
+          <svg class="icon-lg icon-inner" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </div>
+        <span class="font-display text-xl font-semibold">Health Tips</span>
+      </div>
+      <div class="flex flex-col items-center gap-4 stagger-2" style="align-items:center">
+        <div class="glass-card icon-box hover-lift">
+          <svg class="icon-lg icon-inner" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+        </div>
+        <span class="font-display text-xl font-semibold">Easy Recipes</span>
+      </div>
+      <div class="flex flex-col items-center gap-4 stagger-3" style="align-items:center">
+        <div class="glass-card icon-box hover-lift">
+          <svg class="icon-lg icon-inner" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19v20H6.5a2.5 2.5 0 0 1 0-5H19"/></svg>
+        </div>
+        <span class="font-display text-xl font-semibold">Nutrition Guidance</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ FEATURES ACCORDION ═══ -->
+<section class="bg-sec20" id="features">
+  <div class="section-reveal container">
+    <h2 class="font-display text-2xl font-semibold text-center mb-12">AskNestlé offers consumers content and tools that help them make an informed nutritional choice.</h2>
+    <div class="grid-2 items-center" style="align-items:start">
+      <div class="glass-card p-2 hover-lift">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80" alt="Cooking" class="aspect-43" />
+      </div>
+      <div id="accordion">
+        <div class="accordion-item block-hover">
+          <button class="accordion-btn" onclick="toggleAccordion(0)">
+            <span>Nutritious Recipes</span>
+            <svg class="accordion-icon" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12h14"/><path class="accordion-plus" d="M12 5v14"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <p>Pick from a variety of healthy recipes to cook for different ages, occasions, regional preferences & food allergies.</p>
+              <a href="#" class="read-more mt-3">EXPLORE NOW →</a>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item block-hover">
+          <button class="accordion-btn" onclick="toggleAccordion(1)">
+            <span>Expert Articles</span>
+            <svg class="accordion-icon" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12h14"/><path class="accordion-plus" d="M12 5v14"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <p>Read expert-curated articles on child nutrition, growth milestones, and healthy eating habits for the entire family.</p>
+              <a href="#" class="read-more mt-3">EXPLORE NOW →</a>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item block-hover">
+          <button class="accordion-btn" onclick="toggleAccordion(2)">
+            <span>Custom Meal Plan</span>
+            <svg class="accordion-icon" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12h14"/><path class="accordion-plus" d="M12 5v14"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <p>Get personalized meal plans tailored to your child's age, dietary needs, and nutritional requirements.</p>
+              <a href="#" class="read-more mt-3">EXPLORE NOW →</a>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item block-hover">
+          <button class="accordion-btn" onclick="toggleAccordion(3)">
+            <span>Health Tracker</span>
+            <svg class="accordion-icon" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12h14"/><path class="accordion-plus" d="M12 5v14"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <p>Track your child's growth with our comprehensive health tracker and get expert recommendations.</p>
+              <a href="#" class="read-more mt-3">EXPLORE NOW →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ TESTIMONIALS ═══ -->
+<section>
+  <div class="section-reveal container">
+    <h2 class="font-display text-3xl font-bold text-center mb-16">See What Our Users Say!</h2>
+    <div class="grid-3">
+      <div class="glass-card p-8 hover-lift block-hover rounded-xl stagger-1 group" style="display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <svg class="quote-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+          <p class="text-muted leading-relaxed">AskNestlé is fun and skilled at teaching nutrition concepts without any challenge. Each post gave me an opportunity to clear my queries regarding nutrition for children.</p>
+        </div>
+        <div class="mt-8 pt-6 border-t"><span class="font-display text-lg italic">Venky V</span></div>
+      </div>
+      <div class="glass-card p-8 hover-lift block-hover rounded-xl stagger-2 group" style="display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <svg class="quote-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+          <p class="text-muted leading-relaxed">I have two kids, aged 3 years and my second is 8 months. I love everything about AskNestlé. I think it's a one-stop solution to all the problems a mom could be seeking.</p>
+        </div>
+        <div class="mt-8 pt-6 border-t"><span class="font-display text-lg italic">Ishita Dave</span></div>
+      </div>
+      <div class="glass-card p-8 hover-lift block-hover rounded-xl stagger-3 group" style="display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <svg class="quote-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+          <p class="text-muted leading-relaxed">AskNestlé recipes and information are very useful to help me figure out what to feed my children. It's interesting and easy to understand.</p>
+        </div>
+        <div class="mt-8 pt-6 border-t"><span class="font-display text-lg italic">Althea Marak</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ CTA BANNER ═══ -->
+<section>
+  <div class="section-reveal container">
+    <div class="cta-banner p-12">
+      <div class="grid-3">
+        <div class="block-hover rounded-xl p-4">
+          <h3 class="font-display text-xl font-bold mb-3" style="color:var(--primary-fg)">Nestlé News</h3>
+          <p style="color:hsla(220,20%,10%,0.7)" class="mb-4 text-sm">Search our archive of news and press releases</p>
+          <button class="btn-outline">Discover all the news</button>
+        </div>
+        <div class="block-hover rounded-xl p-4">
+          <h3 class="font-display text-xl font-bold mb-3" style="color:var(--primary-fg)">Compliance Concerns</h3>
+          <p style="color:hsla(220,20%,10%,0.7)" class="mb-4 text-sm">Speak up about your concerns</p>
+          <button class="btn-outline">Speak Up</button>
+        </div>
+        <div class="block-hover rounded-xl p-4">
+          <h3 class="font-display text-xl font-bold mb-3" style="color:var(--primary-fg)">Contact us</h3>
+          <p style="color:hsla(220,20%,10%,0.7)" class="mb-4 text-sm">Across the globe, Nestlé are here to help answer your queries</p>
+          <button class="btn-outline">Contact us</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ FOOTER ═══ -->
+<footer class="border-t" style="padding:4rem 0">
+  <div class="container">
+    <div class="grid-4">
+      <div>
+        <h3 class="font-display text-2xl font-bold mb-4">Nestlé</h3>
+        <p class="text-muted text-sm leading-relaxed">We unlock the power of food to enhance quality of life for everyone, today and for generations to come.</p>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-muted tracking-widest mb-4">ABOUT US</h4>
+        <ul class="space-y-3"><li><a href="#" class="footer-link">About Us</a></li><li><a href="#" class="footer-link">At a glance</a></li><li><a href="#" class="footer-link">Research & Development</a></li><li><a href="#" class="footer-link">Our Leadership team</a></li></ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-muted tracking-widest mb-4">BRANDS</h4>
+        <ul class="space-y-3"><li><a href="#" class="footer-link">AskNestlé</a></li><li><a href="#" class="footer-link">Breakfast Cereals</a></li><li><a href="#" class="footer-link">Coffee</a></li><li><a href="#" class="footer-link">Chocolates & Confectionery</a></li></ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-muted tracking-widest mb-4">INVESTORS</h4>
+        <ul class="space-y-3"><li><a href="#" class="footer-link">Key Figures</a></li><li><a href="#" class="footer-link">Analysts' Meet</a></li><li><a href="#" class="footer-link">Investor Services</a></li><li><a href="#" class="footer-link">Policies</a></li></ul>
+      </div>
+    </div>
+    <div class="mt-16 pt-8 border-t text-center text-sm text-muted">© 2026 Nestlé. All rights reserved.</div>
+  </div>
+</footer>
+<!-- ═══ SCROLL TO TOP ═══ -->
+<button id="scrollTop" class="scroll-top glass-card" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg class="icon text-primary" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<!-- ═══ JAVASCRIPT ═══ -->
+<script>
+// ─── Preloader ───
+setTimeout(function(){ document.getElementById('preloader').classList.add('loaded'); }, 1800);
+setTimeout(function(){ var p = document.getElementById('preloader'); if(p) p.remove(); }, 2600);
+// ─── Scroll: nav glass + scroll-top button ───
+var nav = document.getElementById('mainNav');
+var scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 50){ nav.classList.add('glass-nav'); nav.style.boxShadow='0 4px 30px rgba(0,0,0,0.3)'; }
+  else { nav.classList.remove('glass-nav'); nav.style.boxShadow='none'; }
+  if(window.scrollY > 600) scrollBtn.classList.add('show');
+  else scrollBtn.classList.remove('show');
+}, {passive:true});
+// ─── Intersection Observer for section reveals ───
+var reveals = document.querySelectorAll('.section-reveal');
+var revealObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, {threshold:0.15});
+reveals.forEach(function(el){ revealObs.observe(el); });
+// ─── Animated Counters ───
+var counters = document.querySelectorAll('.counter');
+var counterObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting && !e.target.dataset.started){
+      e.target.dataset.started = '1';
+      var target = parseFloat(e.target.dataset.target);
+      var duration = 2000, start = performance.now();
+      function animate(now){
+        var progress = Math.min((now - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        e.target.textContent = (Math.floor(eased * target * 10) / 10).toFixed(1);
+        if(progress < 1) requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    }
+  });
+}, {threshold:0.5});
+counters.forEach(function(el){ counterObs.observe(el); });
+// ─── Accordion ───
+var currentAccordion = 0;
+toggleAccordion(0); // open first by default
+function toggleAccordion(index){
+  var items = document.querySelectorAll('#accordion .accordion-item');
+  items.forEach(function(item, i){
+    var body = item.querySelector('.accordion-body');
+    var plus = item.querySelector('.accordion-plus');
+    if(i === index && !body.classList.contains('open')){
+      body.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      body.style.opacity = '1';
+      if(plus) plus.style.display = 'none';
+      currentAccordion = i;
+    } else {
+      body.classList.remove('open');
+      body.style.maxHeight = '0';
+      body.style.opacity = '0';
+      if(plus) plus.style.display = '';
+    }
+  });
+}
+</script>
+</body>
+</html>
